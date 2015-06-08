@@ -26,9 +26,15 @@ if(settings.logging) {
 
 		// THIS DOESN'T GET CALLED; WHY??
 		process.on('exit', function(code) {
-			fileStream.end();
-			fs.closeSync(file);
-			console.log('About to exit with code:', code);
+			if(fileStream) {
+				console.log('Closed file stream.');
+				fileStream.end();	
+			}
+			if(file) {
+				console.log('Closed file.');
+				fs.closeSync(file);	
+			}
+			console.log('Exiting with code:', code);
 		});
 
 		if(err && err.code === 'EEXIST') {
@@ -72,7 +78,7 @@ function openSerialConnection() {
 		} else {
 			console.log('open');
 			// send mail with defined transport object
-			// transporter.sendMail(mailOptions, function(error, info){
+			// transporter.sendMail(settings.mailOptions, function(error, info){
 			// 	if(error){
 			// 		console.log(error);
 			// 	}else{
@@ -92,14 +98,6 @@ var transporter = nodemailer.createTransport({
 	}
 });
 
-// setup e-mail data with unicode symbols
-var mailOptions = {
-	from: 'Ashton Eby ✔ <tylhandrias@gmail.com>', // sender address
-	to: 'tylhandrias@gmail.com', // list of receivers
-	subject: 'Hello from the Microview ✔', // Subject line
-	text: 'Hello world ✔, this is plaintext body', // plaintext body
-	html: '<b>Hello world, this is HTML body ✔</b>' // html body
-};
 
 function onError(err) {
 	console.log(err);
