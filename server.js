@@ -19,36 +19,25 @@ prompt.start();
 var nodemailer = require('nodemailer');
 var fs = require('fs');
 if(settings.logging) {
-	fs.open('./'+process.argv[2], 'wx', function(err, fd) {
+	fs.open('./'+process.argv[2], 'ax', function(err, fd) {
 		file = fd;
+		fileStream = fs.createWriteStream(process.argv[2], {fd: file, flags: 'a'});
+		serial.on('data', serialDataHandler);
+
+		// THIS DOESN'T GET CALLED; WHY??
+		process.on('exit', function(code) {
+			fileStream.end();
+			fs.closeSync(file);
+			console.log('About to exit with code:', code);
+		});
+
 		if(err && err.code === 'EEXIST') {
 			console.log('The file '+process.argv[2]+' already exists. Append to file?');
 			prompt.get(['shouldAppend'], function(err, result) {
 				if (err) { return onError(err); }
 				if (result.shouldAppend.toLowerCase() === 'y' || result.shouldAppend.toLowerCase() === 'yes') {
 					console.log('Will attempt to append.');
-					serial.open(function (error) {
-						if ( error ) {
-							console.log('failed to open: '+error);
-							process.exit(1);
-						} else {
-							console.log('open');
-							// send mail with defined transport object
-							// transporter.sendMail(mailOptions, function(error, info){
-							// 	if(error){
-							// 		console.log(error);
-							// 	}else{
-							// 		console.log('Message sent: ' + info.response);
-							// 	}
-							// });
-							fileStream = fs.createWriteStream(process.argv[2], {fd: fd});
-							serial.on('data', serialDataHandler);
-							process.on('exit', function(code) {
-								fileStream.end();
-								console.log('About to exit with code:', code);
-							});
-						}
-					});
+					openSerialConnection();
 				} else if (result.shouldAppend.toLowerCase() === 'n' || result.shouldAppend.toLowerCase() === 'no') {
 					console.log('Will crash.');
 					process.exit(0);
@@ -59,15 +48,39 @@ if(settings.logging) {
 		} else if(err) {
 			console.log('This error is NOT ok.');
 			process.exit(1);
+		} else {
+			openSerialConnection();
 		}
 	});
 }
 
 function serialDataHandler(data) {
+	if(fileStream) {
 		console.log(data);
 		fileStream.write(data+"\n", function(err) {
 			if(err) { onError(err); }
 		});
+	}
+}
+
+function openSerialConnection() {
+	serial.open(function (error) {
+		if ( error ) {
+			console.log('Failed to open serial connection: '+error);
+			fs.closeSync(file);
+			process.exit(1);
+		} else {
+			console.log('open');
+			// send mail with defined transport object
+			// transporter.sendMail(mailOptions, function(error, info){
+			// 	if(error){
+			// 		console.log(error);
+			// 	}else{
+			// 		console.log('Message sent: ' + info.response);
+			// 	}
+			// });
+		}
+	});
 }
 
 // create reusable transporter object using SMTP transport
