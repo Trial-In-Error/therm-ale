@@ -1,8 +1,13 @@
 # therm-ale
-a set of tools for measuring and logging beer temperature through fermentation
+A set of tools for measuring and logging beer temperature during fermentation and alerting you via email when the temperature nears unsafe levels.
 
 Components
 ==========
+* [Raspberry Pi](http://www.adafruit.com/product/998). All testing has been conducted on a first generation model B+. Unsure if the a la mode will fit on a second generation raspberry pi.
+* [MLX90614 distance IR sensor](https://www.sparkfun.com/products/9570).
+* [A la mode](http://www.makershed.com/products/alamode-for-raspberry-pi). An equivalent solution can be made with a voltage divider or logic level converter and an arduino; see [this](http://blog.oscarliang.net/raspberry-pi-and-arduino-connected-serial-gpio/).
+* Two 4.7k Ohm resistors.
+* One .1 uF capacitor.
 
 Raspberry Pi Setup
 ==================
@@ -10,7 +15,8 @@ Raspberry Pi Setup
 2. Disable getty and prevent serial writes on boot by following the Raspberry Pi GPIO Configuration section of [this website](http://blog.oscarliang.net/raspberry-pi-and-arduino-connected-serial-gpio/).
 3. Install node.js.
 4. From the project directory, run `npm install`. If this fails with `failed to fetch from registry`, uninstall node.js (`sudo apt-get purge nodejs npm`), and then reinstall using the command line instructions available [here](http://node-arm.herokuapp.com/). Version 0.12.1 verified to work. Then run `npm install`.
-5. Start the serial listener with `node server.js`.
+5. Edit settings.json.
+6. Start the serial listener with `node server.js`.
 
 Arduino Setup
 =============
@@ -20,5 +26,4 @@ Arduino Setup
 
 To Do
 =====
-* Fill out components list.
 * Include I2CMaster library.
