@@ -1,0 +1,26 @@
+{
+  "name": "therm-ale",
+  "version": "0.0.1",
+  "description": "Software for measuring beer temperature during fermentation.",
+  "main": "server.js",
+  "dependencies": {
+    "nodemailer": "^1.3.4",
+    "serialport": "^1.7.4",
+    "prompt": "^0.2.14"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Trial-In-Error/therm-ale"
+  },
+  "author": "",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/Trial-In-Error/therm-ale/issues"
+  },
+  "homepage": "https://github.com/Trial-In-Error/therm-ale"
+}
