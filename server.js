@@ -67,7 +67,40 @@ function serialDataHandler(data) {
 			if(err) { onError(err); }
 		});
 	}
+	if(parseInt(data.split(",").pop()) < settings.lowerThreshhold || parseInt(data.split(",").pop()) > settings.upperThreshhold) {
+		debounce(sendEmailAlert(parseInt(data.split(",").pop())), settings.emailCooldown*60*1000);
+	}
 }
+
+function sendEmailAlert(temperature) {
+	//send mail with defined transport object
+	transporter.sendMail(settings.mailOptions, function(error, info){
+		if(error){
+			console.log(error);
+		}else{
+			console.log('Message sent: ' + info.response);
+		}
+	});
+}
+
+// Returns a function, that, as long as it continues to be invoked, will not
+// be triggered. The function will be called after it stops being called for
+// N milliseconds. If `immediate` is passed, trigger the function on the
+// leading edge, instead of the trailing.
+function debounce(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
 
 function openSerialConnection() {
 	serial.open(function (error) {
@@ -77,14 +110,6 @@ function openSerialConnection() {
 			process.exit(1);
 		} else {
 			console.log('open');
-			// send mail with defined transport object
-			// transporter.sendMail(settings.mailOptions, function(error, info){
-			// 	if(error){
-			// 		console.log(error);
-			// 	}else{
-			// 		console.log('Message sent: ' + info.response);
-			// 	}
-			// });
 		}
 	});
 }
