@@ -1,0 +1,14 @@
+{
+	"user": "youraddress@somedomain.com",
+	"pass": "yoursupersecretpassword",
+	"logging": true,
+	"suppressPrint": false,
+	"emailCooldown": 30,
+	"lowerThreshhold": 65,
+	"upperThreshhold": 70,
+	"mailOptions":
+	{
+		"from": "youraddress@somedomain.com",
+		"to": "youraddress@somedomain.com, yourbrewbuddy@someotherdomain.com"
+	}
+}
