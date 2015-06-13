@@ -1,6 +1,6 @@
 {
-	"user": "tylhandrias@gmail.com",
-	"pass": "L4s3rOSC",
+	"user": "youraddress@somedomain.com",
+	"pass": "yoursupersecretpassword",
 	"logging": true,
 	"suppressPrint": false,
 	"emailCooldown": 30,
