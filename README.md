@@ -22,12 +22,6 @@ Raspberry Pi Setup
 
 Arduino Setup
 =============
-1. Copy the included `I2CMaster` folder to `DEFAULT LINUX PATH FOR ARDUINO LIBS`.
+1. Copy the included `I2CMaster` folder to `~/sketchbook/libraries`.
 2. Wire the arduino to the MLX90614 sensor as specified [here](http://bildr.org/2011/02/mlx90614-arduino/). Note that your sensor may be 5V or 3.3V; the first letter of the code on the casing will tell you which. A for 5V, B for 3.3V. See the product spec sheet [here](https://www.sparkfun.com/datasheets/Sensors/Temperature/SEN-09570-datasheet-3901090614M005.pdf) for more details.
 3. Upload `/MLX90614/MLX90614.ino` to the arduino.
-
-To Do
-=====
-* Include I2CMaster library.
-* Update `DEFAULT LINUX PATH FOR ARDUINO LIBS`.
-* What version of Raspbian?
